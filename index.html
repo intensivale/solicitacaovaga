@@ -1,0 +1,1265 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Formulário de Solicitação de Vaga - CTI Santa Casa Diamantina">
+<meta name="theme-color" content="#26a69a">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📋</text></svg>">
+<title>Solicitação de Vaga - CTI</title>
+<style>
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background: linear-gradient(135deg, #e0f2f1, #f5f5f5);
+    min-height: 100vh;
+    padding: 20px;
+}
+
+.container {
+    max-width: 900px;
+    margin: 0 auto;
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+    overflow: hidden;
+}
+
+.header {
+    background: linear-gradient(135deg, #26a69a, #00796b);
+    color: white;
+    padding: 30px;
+    text-align: center;
+}
+
+.header-logos {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 30px;
+    margin-bottom: 20px;
+}
+
+.header-logos .logo {
+    height: 60px;
+    background: white;
+    padding: 10px;
+    border-radius: 8px;
+    object-fit: contain;
+}
+
+.header h1 {
+    font-size: 28px;
+    margin-bottom: 8px;
+}
+
+.header p {
+    font-size: 14px;
+    opacity: 0.9;
+}
+
+.form-content {
+    padding: 30px;
+}
+
+.section {
+    margin-bottom: 30px;
+    padding-bottom: 25px;
+    border-bottom: 2px solid #e0e0e0;
+}
+
+.section:last-child {
+    border-bottom: none;
+}
+
+.section-title {
+    color: #00796b;
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #26a69a;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    color: #333;
+    font-weight: 600;
+    margin-bottom: 8px;
+    font-size: 14px;
+}
+
+.required::after {
+    content: " *";
+    color: #c62828;
+}
+
+.form-group input[type="text"],
+.form-group input[type="date"],
+.form-group input[type="number"],
+.form-group textarea,
+.form-group select {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    font-size: 14px;
+    font-family: inherit;
+    transition: border-color 0.3s;
+}
+
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus {
+    outline: none;
+    border-color: #26a69a;
+}
+
+.form-group textarea {
+    min-height: 80px;
+    resize: vertical;
+}
+
+.radio-group {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.radio-option {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+}
+
+.radio-option input[type="radio"] {
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+}
+
+.radio-option label {
+    margin: 0;
+    font-weight: normal;
+    cursor: pointer;
+}
+
+.checkbox-group {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.checkbox-option {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.checkbox-option input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+}
+
+.checkbox-option label {
+    margin: 0;
+    font-weight: normal;
+    cursor: pointer;
+    flex: 1;
+}
+
+.conditional-field {
+    display: none;
+    margin-top: 15px;
+    padding: 15px;
+    background: #f5f5f5;
+    border-radius: 8px;
+    border-left: 4px solid #26a69a;
+}
+
+.conditional-field.active {
+    display: block;
+}
+
+.dose-inputs {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+    margin-top: 10px;
+}
+
+.vm-inputs {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 12px;
+    margin-top: 10px;
+}
+
+.atb-inputs {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.invasivos-group {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.invasivo-item {
+    display: grid;
+    grid-template-columns: 2fr 1fr auto;
+    gap: 10px;
+    align-items: end;
+}
+
+.btn-add {
+    padding: 8px 15px;
+    background: #26a69a;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    margin-top: 10px;
+}
+
+.btn-add:hover {
+    background: #00796b;
+}
+
+.btn-remove {
+    padding: 8px 12px;
+    background: #c62828;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 12px;
+}
+
+.btn-remove:hover {
+    background: #8e0000;
+}
+
+.priority-badge {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: bold;
+    margin-left: 10px;
+}
+
+.priority-alta {
+    background: #ffcdd2;
+    color: #c62828;
+}
+
+.priority-media {
+    background: #ffe0b2;
+    color: #f57c00;
+}
+
+.alert-box {
+    background: #fff3e0;
+    border-left: 4px solid #ff9800;
+    padding: 15px;
+    margin-bottom: 20px;
+    border-radius: 4px;
+}
+
+.alert-box strong {
+    color: #e65100;
+}
+
+.form-actions {
+    display: flex;
+    gap: 15px;
+    justify-content: flex-end;
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 2px solid #e0e0e0;
+}
+
+.btn {
+    padding: 14px 30px;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.btn-primary {
+    background: #26a69a;
+    color: white;
+}
+
+.btn-primary:hover {
+    background: #00796b;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(38, 166, 154, 0.3);
+}
+
+.btn-secondary {
+    background: #e0e0e0;
+    color: #333;
+}
+
+.btn-secondary:hover {
+    background: #bdbdbd;
+}
+
+.success-message {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    padding: 40px;
+    border-radius: 16px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    text-align: center;
+    z-index: 10000;
+    max-width: 400px;
+    width: 90%;
+}
+
+.success-message.show {
+    display: block;
+    animation: fadeIn 0.3s;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translate(-50%, -60%); }
+    to { opacity: 1; transform: translate(-50%, -50%); }
+}
+
+.success-icon {
+    font-size: 64px;
+    margin-bottom: 20px;
+}
+
+.success-message h2 {
+    color: #2e7d32;
+    margin-bottom: 15px;
+}
+
+.success-message p {
+    color: #666;
+    margin-bottom: 25px;
+}
+
+.overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.5);
+    z-index: 9999;
+}
+
+.overlay.show {
+    display: block;
+}
+
+@media (max-width: 768px) {
+    .dose-inputs,
+    .vm-inputs {
+        grid-template-columns: 1fr;
+    }
+    
+    .invasivo-item {
+        grid-template-columns: 1fr;
+    }
+    
+    .form-actions {
+        flex-direction: column;
+    }
+    
+    .btn {
+        width: 100%;
+    }
+}
+</style>
+</head>
+<body>
+
+<div class="overlay" id="overlay"></div>
+
+<div class="success-message" id="successMessage">
+    <div class="success-icon">✅</div>
+    <h2>Solicitação Enviada!</h2>
+    <p>A solicitação foi registrada com sucesso e está disponível para a equipe do CTI.</p>
+    <button class="btn btn-primary" onclick="novaSolicitacao()">Nova Solicitação</button>
+</div>
+
+<div class="container">
+    <div class="header">
+        <div class="header-logos">
+            <img src="data:image/png;base64,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" alt="Santa Casa" class="logo">
+            <img src="data:image/png;base64,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" alt="Intensivale" class="logo">
+        </div>
+        <h1>📋 Solicitação de Vaga na UTI</h1>
+        <p>Santa Casa de Caridade de Diamantina / Intensivale</p>
+    </div>
+    
+    <div class="form-content">
+        <div class="alert-box">
+            <strong>⚠️ Atenção:</strong> Preencha todos os campos obrigatórios (*). A solicitação será exibida em tempo real no painel de gestão de leitos.
+        </div>
+        
+        <form id="formSolicitacao">
+            
+            <!-- DADOS BÁSICOS -->
+            <div class="section">
+                <div class="section-title">
+                    👤 Dados Básicos
+                </div>
+                
+                <div class="form-group">
+                    <label class="required">Nome do Solicitante</label>
+                    <input type="text" id="nomeSolicitante" required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="required">Nome do Paciente</label>
+                    <input type="text" id="nomePaciente" required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="required">Diagnóstico</label>
+                    <textarea id="diagnostico" required></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label class="required">Idade</label>
+                    <input type="number" id="idade" min="0" max="150" required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="required">Local de Alocação do Paciente</label>
+                    <div class="radio-group">
+                        <div class="radio-option">
+                            <input type="radio" id="localPA" name="localAlocacao" value="PA">
+                            <label for="localPA">PA (Pronto Atendimento)</label>
+                        </div>
+                        <div class="radio-option">
+                            <input type="radio" id="localClinicaCirurgica" name="localAlocacao" value="Clinica Cirúrgica">
+                            <label for="localClinicaCirurgica">Clínica Cirúrgica</label>
+                        </div>
+                        <div class="radio-option">
+                            <input type="radio" id="localClinicaCardiologica" name="localAlocacao" value="Clínica Cardiológica">
+                            <label for="localClinicaCardiologica">Clínica Cardiológica</label>
+                        </div>
+                        <div class="radio-option">
+                            <input type="radio" id="localClinicaNeurologica" name="localAlocacao" value="Clínica Neurológica">
+                            <label for="localClinicaNeurologica">Clínica Neurológica</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="campoLeitoAlocacao" class="conditional-field">
+                    <div class="form-group">
+                        <label class="required">Leito do Paciente</label>
+                        <input type="text" id="leitoAlocacao" placeholder="Ex: Leito 05, Box 3, etc.">
+                    </div>
+                </div>
+            </div>
+            
+            <!-- RESERVA CIRÚRGICA -->
+            <div class="section">
+                <div class="section-title">
+                    🏥 Reserva Cirúrgica
+                </div>
+                
+                <div class="form-group">
+                    <label class="required">Reserva Cirúrgica?</label>
+                    <div class="radio-group">
+                        <div class="radio-option">
+                            <input type="radio" id="reservaSim" name="reservaCirurgica" value="sim">
+                            <label for="reservaSim">Sim</label>
+                        </div>
+                        <div class="radio-option">
+                            <input type="radio" id="reservaNao" name="reservaCirurgica" value="nao" checked>
+                            <label for="reservaNao">Não</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="camposReservaCirurgica" class="conditional-field">
+                    <div class="form-group">
+                        <label class="required">Data da Cirurgia</label>
+                        <input type="date" id="dataCirurgia">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="required">Confirmação da Reserva de Hemocomponentes Realizada?</label>
+                        <div class="radio-group">
+                            <div class="radio-option">
+                                <input type="radio" id="hemoSim" name="hemocomponentes" value="sim">
+                                <label for="hemoSim">Sim</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" id="hemoNao" name="hemocomponentes" value="nao">
+                                <label for="hemoNao">Não</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- CARDIOVASCULAR -->
+            <div class="section">
+                <div class="section-title">
+                    ❤️ Cirurgia Cardiovascular
+                </div>
+                
+                <div class="form-group">
+                    <label class="required">Cirurgia da Cardiovascular?</label>
+                    <div class="radio-group">
+                        <div class="radio-option">
+                            <input type="radio" id="cardiovascularSim" name="cardiovascular" value="sim">
+                            <label for="cardiovascularSim">Sim</label>
+                        </div>
+                        <div class="radio-option">
+                            <input type="radio" id="cardiovascularNao" name="cardiovascular" value="nao" checked>
+                            <label for="cardiovascularNao">Não</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="camposCardiovascular" class="conditional-field">
+                    <div class="form-group">
+                        <label class="required">Mupirocina Feita?</label>
+                        <div class="radio-group">
+                            <div class="radio-option">
+                                <input type="radio" id="mupirocinaSim" name="mupirocina" value="sim">
+                                <label for="mupirocinaSim">Sim</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" id="mupirocinaNao" name="mupirocina" value="nao">
+                                <label for="mupirocinaNao">Não</label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div id="camposMupirocina" class="conditional-field">
+                        <div class="form-group">
+                            <label class="required">Data de Início da Mupirocina</label>
+                            <input type="date" id="dataInicioMupirocina">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- INSTABILIDADE HEMODINÂMICA -->
+            <div class="section">
+                <div class="section-title">
+                    💉 Instabilidade Hemodinâmica
+                    <span class="priority-badge priority-alta">ALTA PRIORIDADE</span>
+                </div>
+                
+                <div class="form-group">
+                    <label class="required">Instabilidade Hemodinâmica?</label>
+                    <div class="radio-group">
+                        <div class="radio-option">
+                            <input type="radio" id="hemodinamicaSim" name="hemodinamica" value="sim">
+                            <label for="hemodinamicaSim">Sim</label>
+                        </div>
+                        <div class="radio-option">
+                            <input type="radio" id="hemodinamicaNao" name="hemodinamica" value="nao" checked>
+                            <label for="hemodinamicaNao">Não</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="camposHemodinamica" class="conditional-field">
+                    <div class="form-group">
+                        <label>Drogas Vasoativas (selecione e informe a dose)</label>
+                        <div class="checkbox-group">
+                            <div class="checkbox-option">
+                                <input type="checkbox" id="noradrenalina" name="drogas" value="noradrenalina">
+                                <label for="noradrenalina">Noradrenalina</label>
+                            </div>
+                            <div id="campoNoradrenalina" class="conditional-field" style="margin-left: 30px;">
+                                <input type="text" placeholder="Dose (ex: 0.1 mcg/kg/min)" id="doseNoradrenalina">
+                            </div>
+                            
+                            <div class="checkbox-option">
+                                <input type="checkbox" id="vasopressina" name="drogas" value="vasopressina">
+                                <label for="vasopressina">Vasopressina</label>
+                            </div>
+                            <div id="campoVasopressina" class="conditional-field" style="margin-left: 30px;">
+                                <input type="text" placeholder="Dose (ex: 0.04 U/min)" id="doseVasopressina">
+                            </div>
+                            
+                            <div class="checkbox-option">
+                                <input type="checkbox" id="adrenalina" name="drogas" value="adrenalina">
+                                <label for="adrenalina">Adrenalina</label>
+                            </div>
+                            <div id="campoAdrenalina" class="conditional-field" style="margin-left: 30px;">
+                                <input type="text" placeholder="Dose (ex: 0.05 mcg/kg/min)" id="doseAdrenalina">
+                            </div>
+                            
+                            <div class="checkbox-option">
+                                <input type="checkbox" id="dobutamina" name="drogas" value="dobutamina">
+                                <label for="dobutamina">Dobutamina</label>
+                            </div>
+                            <div id="campoDobutamina" class="conditional-field" style="margin-left: 30px;">
+                                <input type="text" placeholder="Dose (ex: 5 mcg/kg/min)" id="doseDobutamina">
+                            </div>
+                            
+                            <div class="checkbox-option">
+                                <input type="checkbox" id="milrinona" name="drogas" value="milrinona">
+                                <label for="milrinona">Milrinona</label>
+                            </div>
+                            <div id="campoMilrinona" class="conditional-field" style="margin-left: 30px;">
+                                <input type="text" placeholder="Dose (ex: 0.375 mcg/kg/min)" id="doseMilrinona">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Volume Infundido</label>
+                        <input type="text" id="volumeInfundido" placeholder="Ex: 1000ml SF 0,9%">
+                    </div>
+                </div>
+            </div>
+            
+            <!-- INSTABILIDADE RESPIRATÓRIA -->
+            <div class="section">
+                <div class="section-title">
+                    🫁 Instabilidade Respiratória
+                    <span class="priority-badge priority-alta">ALTA PRIORIDADE</span>
+                </div>
+                
+                <div class="form-group">
+                    <label class="required">Instabilidade Respiratória?</label>
+                    <div class="radio-group">
+                        <div class="radio-option">
+                            <input type="radio" id="respiratoriaSim" name="respiratoria" value="sim">
+                            <label for="respiratoriaSim">Sim</label>
+                        </div>
+                        <div class="radio-option">
+                            <input type="radio" id="respiratoriaNao" name="respiratoria" value="nao" checked>
+                            <label for="respiratoriaNao">Não</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="camposRespiratoria" class="conditional-field">
+                    <div class="form-group">
+                        <label class="required">Aporte de O₂</label>
+                        <div class="radio-group">
+                            <div class="radio-option">
+                                <input type="radio" id="cn" name="aporteO2" value="cn">
+                                <label for="cn">CN (Cateter Nasal)</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" id="mr" name="aporteO2" value="mr">
+                                <label for="mr">MR (Máscara de Reservatório)</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" id="venturi" name="aporteO2" value="venturi">
+                                <label for="venturi">Venturi</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" id="vm" name="aporteO2" value="vm">
+                                <label for="vm">VM (Ventilação Mecânica)</label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div id="campoLitrosO2" class="conditional-field">
+                        <div class="form-group">
+                            <label class="required">Litros/FiO₂</label>
+                            <input type="text" id="litrosO2" placeholder="Ex: 5L/min ou 50%">
+                        </div>
+                    </div>
+                    
+                    <div id="camposVM" class="conditional-field">
+                        <div class="vm-inputs">
+                            <div class="form-group">
+                                <label class="required">Modo</label>
+                                <input type="text" id="vmModo" placeholder="Ex: PSV, VCV">
+                            </div>
+                            <div class="form-group">
+                                <label>PS/Pinsp</label>
+                                <input type="text" id="vmPS" placeholder="Ex: 12 cmH₂O">
+                            </div>
+                            <div class="form-group">
+                                <label>VC</label>
+                                <input type="text" id="vmVC" placeholder="Ex: 450 ml">
+                            </div>
+                            <div class="form-group">
+                                <label>FR</label>
+                                <input type="text" id="vmFR" placeholder="Ex: 16 ipm">
+                            </div>
+                            <div class="form-group">
+                                <label>PEEP</label>
+                                <input type="text" id="vmPEEP" placeholder="Ex: 8 cmH₂O">
+                            </div>
+                            <div class="form-group">
+                                <label>FiO₂</label>
+                                <input type="text" id="vmFiO2" placeholder="Ex: 40%">
+                            </div>
+                            <div class="form-group">
+                                <label>Ppico</label>
+                                <input type="text" id="vmPpico" placeholder="Ex: 25 cmH₂O">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- SEPSE -->
+            <div class="section">
+                <div class="section-title">
+                    🦠 Sepse
+                    <span class="priority-badge priority-alta">ALTA PRIORIDADE</span>
+                </div>
+                
+                <div class="form-group">
+                    <label class="required">Sepse?</label>
+                    <div class="radio-group">
+                        <div class="radio-option">
+                            <input type="radio" id="sepseSim" name="sepse" value="sim">
+                            <label for="sepseSim">Sim</label>
+                        </div>
+                        <div class="radio-option">
+                            <input type="radio" id="sepseNao" name="sepse" value="nao" checked>
+                            <label for="sepseNao">Não</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="camposSepse" class="conditional-field">
+                    <div class="form-group">
+                        <label>Antibióticos Iniciados</label>
+                        <div class="atb-inputs">
+                            <input type="text" id="atb1" placeholder="Antibiótico 1">
+                            <input type="text" id="atb2" placeholder="Antibiótico 2">
+                            <input type="text" id="atb3" placeholder="Antibiótico 3">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="required">Culturas Coletadas?</label>
+                        <div class="radio-group">
+                            <div class="radio-option">
+                                <input type="radio" id="culturasSim" name="culturas" value="sim">
+                                <label for="culturasSim">Sim</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" id="culturasNao" name="culturas" value="nao">
+                                <label for="culturasNao">Não</label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div id="camposCulturasColetadas" class="conditional-field">
+                        <div class="checkbox-group">
+                            <div class="checkbox-option">
+                                <input type="checkbox" id="culturaST" name="tiposCultura" value="ST">
+                                <label for="culturaST">ST (Sangue Total)</label>
+                            </div>
+                            <div class="checkbox-option">
+                                <input type="checkbox" id="culturaURC" name="tiposCultura" value="URC">
+                                <label for="culturaURC">URC (Urocultura)</label>
+                            </div>
+                            <div class="checkbox-option">
+                                <input type="checkbox" id="culturaHMC" name="tiposCultura" value="HMC">
+                                <label for="culturaHMC">HMC (Hemocultura)</label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div id="camposMotivoNaoCultura" class="conditional-field">
+                        <div class="form-group">
+                            <label>Motivo de Não Ter Sido Coletada</label>
+                            <textarea id="motivoNaoCultura" placeholder="Descreva o motivo"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- ISOLAMENTO -->
+            <div class="section">
+                <div class="section-title">
+                    😷 Isolamento
+                </div>
+                
+                <div class="form-group">
+                    <label class="required">Necessidade de Isolamento Respiratório?</label>
+                    <div class="radio-group">
+                        <div class="radio-option">
+                            <input type="radio" id="isolamentoSim" name="isolamento" value="sim">
+                            <label for="isolamentoSim">Sim</label>
+                        </div>
+                        <div class="radio-option">
+                            <input type="radio" id="isolamentoNao" name="isolamento" value="nao" checked>
+                            <label for="isolamentoNao">Não</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- INVASIVOS -->
+            <div class="section">
+                <div class="section-title">
+                    💉 Dispositivos Invasivos
+                </div>
+                
+                <div class="form-group">
+                    <label class="required">Invasivos?</label>
+                    <div class="radio-group">
+                        <div class="radio-option">
+                            <input type="radio" id="invasivosSim" name="invasivos" value="sim">
+                            <label for="invasivosSim">Sim</label>
+                        </div>
+                        <div class="radio-option">
+                            <input type="radio" id="invasivosNao" name="invasivos" value="nao" checked>
+                            <label for="invasivosNao">Não</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="camposInvasivos" class="conditional-field">
+                    <div class="invasivos-group" id="invasivosGroup">
+                        <div class="invasivo-item">
+                            <div class="form-group" style="margin: 0;">
+                                <input type="text" id="invasivo1" placeholder="Ex: CVC em subclávia direita">
+                            </div>
+                            <div class="form-group" style="margin: 0;">
+                                <input type="date" id="dataInvasivo1">
+                            </div>
+                        </div>
+                    </div>
+                    <button type="button" class="btn-add" onclick="adicionarInvasivo()">+ Adicionar Outro Invasivo</button>
+                </div>
+            </div>
+            
+            <!-- INSUFICIÊNCIA RENAL -->
+            <div class="section">
+                <div class="section-title">
+                    🩺 Função Renal
+                </div>
+                
+                <div class="form-group">
+                    <label class="required">Insuficiência Renal?</label>
+                    <div class="radio-group">
+                        <div class="radio-option">
+                            <input type="radio" id="renalSim" name="renal" value="sim">
+                            <label for="renalSim">Sim</label>
+                        </div>
+                        <div class="radio-option">
+                            <input type="radio" id="renalNao" name="renal" value="nao" checked>
+                            <label for="renalNao">Não</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="camposRenal" class="conditional-field">
+                    <div class="dose-inputs">
+                        <div class="form-group">
+                            <label class="required">Última Creatinina</label>
+                            <input type="text" id="creatinina" placeholder="Ex: 2.5 mg/dL">
+                        </div>
+                        <div class="form-group">
+                            <label class="required">Última Ureia</label>
+                            <input type="text" id="ureia" placeholder="Ex: 120 mg/dL">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- NÍVEL DE CONSCIÊNCIA -->
+            <div class="section">
+                <div class="section-title">
+                    🧠 Nível de Consciência
+                </div>
+                
+                <div class="form-group">
+                    <label class="required">Alteração do Nível de Consciência?</label>
+                    <div class="radio-group">
+                        <div class="radio-option">
+                            <input type="radio" id="conscienciaSim" name="consciencia" value="sim">
+                            <label for="conscienciaSim">Sim</label>
+                        </div>
+                        <div class="radio-option">
+                            <input type="radio" id="conscienciaNao" name="consciencia" value="nao" checked>
+                            <label for="conscienciaNao">Não</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="camposConsciencia" class="conditional-field">
+                    <div class="form-group">
+                        <label class="required">Último Glasgow</label>
+                        <input type="number" id="glasgow" min="3" max="15" placeholder="3-15">
+                    </div>
+                </div>
+            </div>
+            
+            <!-- AÇÕES -->
+            <div class="form-actions">
+                <button type="button" class="btn btn-secondary" onclick="limparFormulario()">Limpar Formulário</button>
+                <button type="submit" class="btn btn-primary">📤 Enviar Solicitação</button>
+            </div>
+            
+        </form>
+    </div>
+</div>
+
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+
+<script>
+// Configuração Firebase (MESMA do index.html)
+const firebaseConfig = {
+    apiKey: "AIzaSyDHnm7l4W1LoBXo0ew9RYVeJc_yWBzT0Aw",
+    authDomain: "passometrout.firebaseapp.com",
+    projectId: "passometrout",
+    storageBucket: "passometrout.firebasestorage.app",
+    messagingSenderId: "441997177882",
+    appId: "1:441997177882:web:6e7f1bf90bf1963e9e0b5b"
+};
+
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+
+let invasivoCount = 1;
+
+// ========== CAMPOS CONDICIONAIS ==========
+
+// Local de Alocação - Leito
+document.querySelectorAll('input[name="localAlocacao"]').forEach(radio => {
+    radio.addEventListener('change', function() {
+        document.getElementById('campoLeitoAlocacao').classList.add('active');
+    });
+});
+
+// Reserva Cirúrgica
+document.querySelectorAll('input[name="reservaCirurgica"]').forEach(radio => {
+    radio.addEventListener('change', function() {
+        document.getElementById('camposReservaCirurgica').classList.toggle('active', this.value === 'sim');
+    });
+});
+
+// Cardiovascular
+document.querySelectorAll('input[name="cardiovascular"]').forEach(radio => {
+    radio.addEventListener('change', function() {
+        document.getElementById('camposCardiovascular').classList.toggle('active', this.value === 'sim');
+    });
+});
+
+// Mupirocina
+document.querySelectorAll('input[name="mupirocina"]').forEach(radio => {
+    radio.addEventListener('change', function() {
+        document.getElementById('camposMupirocina').classList.toggle('active', this.value === 'sim');
+    });
+});
+
+// Hemodinâmica
+document.querySelectorAll('input[name="hemodinamica"]').forEach(radio => {
+    radio.addEventListener('change', function() {
+        document.getElementById('camposHemodinamica').classList.toggle('active', this.value === 'sim');
+    });
+});
+
+// Drogas vasoativas individuais
+const drogas = ['noradrenalina', 'vasopressina', 'adrenalina', 'dobutamina', 'milrinona'];
+drogas.forEach(droga => {
+    document.getElementById(droga).addEventListener('change', function() {
+        const campo = droga.charAt(0).toUpperCase() + droga.slice(1);
+        document.getElementById(`campo${campo}`).classList.toggle('active', this.checked);
+    });
+});
+
+// Respiratória
+document.querySelectorAll('input[name="respiratoria"]').forEach(radio => {
+    radio.addEventListener('change', function() {
+        document.getElementById('camposRespiratoria').classList.toggle('active', this.value === 'sim');
+    });
+});
+
+// Aporte O2
+document.querySelectorAll('input[name="aporteO2"]').forEach(radio => {
+    radio.addEventListener('change', function() {
+        const isVM = this.value === 'vm';
+        const isOutro = this.value !== 'vm';
+        
+        document.getElementById('campoLitrosO2').classList.toggle('active', isOutro);
+        document.getElementById('camposVM').classList.toggle('active', isVM);
+    });
+});
+
+// Sepse
+document.querySelectorAll('input[name="sepse"]').forEach(radio => {
+    radio.addEventListener('change', function() {
+        document.getElementById('camposSepse').classList.toggle('active', this.value === 'sim');
+    });
+});
+
+// Culturas
+document.querySelectorAll('input[name="culturas"]').forEach(radio => {
+    radio.addEventListener('change', function() {
+        document.getElementById('camposCulturasColetadas').classList.toggle('active', this.value === 'sim');
+        document.getElementById('camposMotivoNaoCultura').classList.toggle('active', this.value === 'nao');
+    });
+});
+
+// Invasivos
+document.querySelectorAll('input[name="invasivos"]').forEach(radio => {
+    radio.addEventListener('change', function() {
+        document.getElementById('camposInvasivos').classList.toggle('active', this.value === 'sim');
+    });
+});
+
+// Renal
+document.querySelectorAll('input[name="renal"]').forEach(radio => {
+    radio.addEventListener('change', function() {
+        document.getElementById('camposRenal').classList.toggle('active', this.value === 'sim');
+    });
+});
+
+// Consciência
+document.querySelectorAll('input[name="consciencia"]').forEach(radio => {
+    radio.addEventListener('change', function() {
+        document.getElementById('camposConsciencia').classList.toggle('active', this.value === 'sim');
+    });
+});
+
+// ========== INVASIVOS DINÂMICOS ==========
+
+function adicionarInvasivo() {
+    invasivoCount++;
+    const group = document.getElementById('invasivosGroup');
+    
+    const div = document.createElement('div');
+    div.className = 'invasivo-item';
+    div.innerHTML = `
+        <div class="form-group" style="margin: 0;">
+            <input type="text" id="invasivo${invasivoCount}" placeholder="Ex: CVC em subclávia direita">
+        </div>
+        <div class="form-group" style="margin: 0;">
+            <input type="date" id="dataInvasivo${invasivoCount}">
+        </div>
+        <button type="button" class="btn-remove" onclick="removerInvasivo(this)">✕</button>
+    `;
+    
+    group.appendChild(div);
+}
+
+function removerInvasivo(btn) {
+    btn.parentElement.remove();
+}
+
+// ========== ENVIO DO FORMULÁRIO ==========
+
+document.getElementById('formSolicitacao').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    
+    // Calcular prioridade
+    const prioridade = calcularPrioridade();
+    
+    // Coletar dados
+    const dados = {
+        // Dados básicos
+        nomeSolicitante: document.getElementById('nomeSolicitante').value,
+        nomePaciente: document.getElementById('nomePaciente').value,
+        diagnostico: document.getElementById('diagnostico').value,
+        idade: document.getElementById('idade').value,
+        localAlocacao: getRadioValue('localAlocacao'),
+        leitoAlocacao: document.getElementById('leitoAlocacao').value || null,
+        
+        // Reserva cirúrgica
+        reservaCirurgica: document.querySelector('input[name="reservaCirurgica"]:checked').value === 'sim',
+        dataCirurgia: document.getElementById('dataCirurgia').value || null,
+        hemocomponentes: getRadioValue('hemocomponentes'),
+        
+        // Cardiovascular
+        cardiovascular: document.querySelector('input[name="cardiovascular"]:checked').value === 'sim',
+        mupirocina: getRadioValue('mupirocina'),
+        dataInicioMupirocina: document.getElementById('dataInicioMupirocina').value || null,
+        
+        // Hemodinâmica
+        instabilidadeHemodinamica: document.querySelector('input[name="hemodinamica"]:checked').value === 'sim',
+        drogas: coletarDrogas(),
+        volumeInfundido: document.getElementById('volumeInfundido').value || null,
+        
+        // Respiratória
+        instabilidadeRespiratoria: document.querySelector('input[name="respiratoria"]:checked').value === 'sim',
+        aporteO2: getRadioValue('aporteO2'),
+        litrosO2: document.getElementById('litrosO2').value || null,
+        vm: coletarDadosVM(),
+        
+        // Sepse
+        sepse: document.querySelector('input[name="sepse"]:checked').value === 'sim',
+        antibioticos: [
+            document.getElementById('atb1').value,
+            document.getElementById('atb2').value,
+            document.getElementById('atb3').value
+        ].filter(x => x),
+        culturasColetadas: getRadioValue('culturas'),
+        tiposCultura: coletarTiposCultura(),
+        motivoNaoCultura: document.getElementById('motivoNaoCultura').value || null,
+        
+        // Outros
+        isolamentoRespiratorio: document.querySelector('input[name="isolamento"]:checked').value === 'sim',
+        invasivos: coletarInvasivos(),
+        insuficienciaRenal: document.querySelector('input[name="renal"]:checked').value === 'sim',
+        creatinina: document.getElementById('creatinina').value || null,
+        ureia: document.getElementById('ureia').value || null,
+        alteracaoConsciencia: document.querySelector('input[name="consciencia"]:checked').value === 'sim',
+        glasgow: document.getElementById('glasgow').value || null,
+        
+        // Metadata
+        prioridade: prioridade,
+        status: 'pendente',
+        dataHoraSolicitacao: new Date().toISOString(),
+        timestamp: firebase.firestore.FieldValue.serverTimestamp()
+    };
+    
+    try {
+        await db.collection('solicitacoes').add(dados);
+        mostrarSucesso();
+    } catch (error) {
+        alert('Erro ao enviar solicitação: ' + error.message);
+    }
+});
+
+function getRadioValue(name) {
+    const radio = document.querySelector(`input[name="${name}"]:checked`);
+    return radio ? radio.value : null;
+}
+
+function coletarDrogas() {
+    const drogas = {};
+    const drogasList = ['noradrenalina', 'vasopressina', 'adrenalina', 'dobutamina', 'milrinona'];
+    
+    drogasList.forEach(droga => {
+        if (document.getElementById(droga).checked) {
+            const campo = droga.charAt(0).toUpperCase() + droga.slice(1);
+            drogas[droga] = document.getElementById(`dose${campo}`).value || '';
+        }
+    });
+    
+    return Object.keys(drogas).length > 0 ? drogas : null;
+}
+
+function coletarDadosVM() {
+    const aporteO2 = getRadioValue('aporteO2');
+    if (aporteO2 !== 'vm') return null;
+    
+    return {
+        modo: document.getElementById('vmModo').value || '',
+        ps: document.getElementById('vmPS').value || '',
+        vc: document.getElementById('vmVC').value || '',
+        fr: document.getElementById('vmFR').value || '',
+        peep: document.getElementById('vmPEEP').value || '',
+        fio2: document.getElementById('vmFiO2').value || '',
+        ppico: document.getElementById('vmPpico').value || ''
+    };
+}
+
+function coletarTiposCultura() {
+    const tipos = [];
+    ['ST', 'URC', 'HMC'].forEach(tipo => {
+        if (document.getElementById(`cultura${tipo}`).checked) {
+            tipos.push(tipo);
+        }
+    });
+    return tipos.length > 0 ? tipos : null;
+}
+
+function coletarInvasivos() {
+    const invasivos = [];
+    for (let i = 1; i <= invasivoCount; i++) {
+        const desc = document.getElementById(`invasivo${i}`);
+        const data = document.getElementById(`dataInvasivo${i}`);
+        
+        if (desc && desc.value) {
+            invasivos.push({
+                descricao: desc.value,
+                dataInsercao: data ? data.value : null
+            });
+        }
+    }
+    return invasivos.length > 0 ? invasivos : null;
+}
+
+function calcularPrioridade() {
+    let score = 0;
+    
+    // Alta prioridade
+    if (document.querySelector('input[name="hemodinamica"]:checked').value === 'sim') score += 3;
+    if (document.querySelector('input[name="respiratoria"]:checked').value === 'sim') score += 3;
+    if (document.querySelector('input[name="sepse"]:checked').value === 'sim') score += 2;
+    
+    // Média prioridade
+    if (document.querySelector('input[name="renal"]:checked').value === 'sim') score += 1;
+    if (document.querySelector('input[name="consciencia"]:checked').value === 'sim') score += 1;
+    
+    if (score >= 4) return 'alta';
+    if (score >= 2) return 'media';
+    return 'baixa';
+}
+
+function mostrarSucesso() {
+    document.getElementById('overlay').classList.add('show');
+    document.getElementById('successMessage').classList.add('show');
+}
+
+function novaSolicitacao() {
+    document.getElementById('overlay').classList.remove('show');
+    document.getElementById('successMessage').classList.remove('show');
+    limparFormulario();
+}
+
+function limparFormulario() {
+    document.getElementById('formSolicitacao').reset();
+    document.querySelectorAll('.conditional-field').forEach(field => {
+        field.classList.remove('active');
+    });
+    
+    // Reset invasivos
+    invasivoCount = 1;
+    document.getElementById('invasivosGroup').innerHTML = `
+        <div class="invasivo-item">
+            <div class="form-group" style="margin: 0;">
+                <input type="text" id="invasivo1" placeholder="Ex: CVC em subclávia direita">
+            </div>
+            <div class="form-group" style="margin: 0;">
+                <input type="date" id="dataInvasivo1">
+            </div>
+        </div>
+    `;
+}
+</script>
+
+</body>
+</html>
