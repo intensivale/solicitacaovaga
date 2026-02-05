@@ -428,6 +428,9 @@ body {
     <div class="form-content">
         <div class="alert-box">
             <strong>⚠️ Atenção:</strong> Preencha todos os campos obrigatórios (*). A solicitação será exibida em tempo real no painel de gestão de leitos.
+            <button type="button" onclick="testarConexaoFirebase()" style="margin-left: 20px; padding: 5px 10px; background: #0277bd; color: white; border: none; border-radius: 4px; cursor: pointer;">
+                🔧 Testar Conexão Firebase
+            </button>
         </div>
         
         <form id="formSolicitacao">
@@ -933,11 +936,39 @@ body {
     </div>
 </div>
 
-<!-- Firebase -->
-<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+<!-- Firebase - Versão Atualizada com Detecção de Erro -->
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
 
 <script>
+// Verificar se Firebase carregou
+if (typeof firebase === 'undefined') {
+    document.body.innerHTML = `
+        <div style="max-width: 600px; margin: 50px auto; padding: 40px; background: #ffebee; border-radius: 12px; border-left: 5px solid #c62828;">
+            <h2 style="color: #c62828; margin-top: 0;">❌ Erro ao Carregar Firebase</h2>
+            <p><strong>Os scripts do Firebase não carregaram.</strong></p>
+            <p>Possíveis causas:</p>
+            <ul>
+                <li>Você está abrindo o arquivo direto do computador (file:///)</li>
+                <li>Seu navegador está bloqueando scripts externos</li>
+                <li>Não há conexão com internet</li>
+            </ul>
+            <h3>✅ Soluções:</h3>
+            <ol>
+                <li><strong>Use um servidor local:</strong>
+                    <br>• Execute: <code style="background: #333; color: #0f0; padding: 2px 8px; border-radius: 4px;">python3 -m http.server 8000</code>
+                    <br>• Acesse: <code style="background: #333; color: #0ff; padding: 2px 8px; border-radius: 4px;">http://localhost:8000/formulario-solicitacao-uti.html</code>
+                </li>
+                <li><strong>Ou hospede no Firebase Hosting</strong></li>
+                <li><strong>Ou use o servidor que criei: servidor-local.py</strong></li>
+            </ol>
+        </div>
+    `;
+    throw new Error('Firebase não carregou. Veja instruções na tela.');
+}
+
+console.log('✅ Firebase carregado com sucesso!');
+
 // Configuração Firebase (MESMA do index.html)
 const firebaseConfig = {
     apiKey: "AIzaSyDHnm7l4W1LoBXo0ew9RYVeJc_yWBzT0Aw",
@@ -952,6 +983,20 @@ firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 
 let invasivoCount = 1;
+
+// Função de teste de conexão
+async function testarConexaoFirebase() {
+    console.log('🔧 Testando conexão com Firebase...');
+    try {
+        // Tentar ler a coleção de solicitações
+        const snapshot = await db.collection('solicitacoes').limit(1).get();
+        console.log('✅ Conexão OK! Documentos encontrados:', snapshot.size);
+        alert('✅ Conexão com Firebase está funcionando!\n\nTotal de documentos: ' + snapshot.size);
+    } catch (error) {
+        console.error('❌ Erro na conexão:', error);
+        alert('❌ Erro na conexão com Firebase:\n\n' + error.message + '\n\nVerifique:\n1. Configuração do Firebase\n2. Regras de segurança\n3. Console do navegador (F12)');
+    }
+}
 
 // ========== CAMPOS CONDICIONAIS ==========
 
@@ -1083,6 +1128,22 @@ function removerInvasivo(btn) {
 document.getElementById('formSolicitacao').addEventListener('submit', async function(e) {
     e.preventDefault();
     
+    // Validar campo de local de alocação
+    const localSelecionado = document.querySelector('input[name="localAlocacao"]:checked');
+    if (!localSelecionado) {
+        alert('⚠️ Por favor, selecione o Local de Alocação do Paciente!');
+        document.querySelector('input[name="localAlocacao"]').scrollIntoView({ behavior: 'smooth', block: 'center' });
+        return;
+    }
+    
+    // Validar leito se local foi selecionado
+    const leito = document.getElementById('leitoAlocacao').value;
+    if (!leito || leito.trim() === '') {
+        alert('⚠️ Por favor, informe o Leito do Paciente!');
+        document.getElementById('leitoAlocacao').focus();
+        return;
+    }
+    
     // Calcular prioridade
     const prioridade = calcularPrioridade();
     
@@ -1145,10 +1206,13 @@ document.getElementById('formSolicitacao').addEventListener('submit', async func
     };
     
     try {
-        await db.collection('solicitacoes').add(dados);
+        console.log('📤 Enviando solicitação...', dados);
+        const docRef = await db.collection('solicitacoes').add(dados);
+        console.log('✅ Solicitação enviada com ID:', docRef.id);
         mostrarSucesso();
     } catch (error) {
-        alert('Erro ao enviar solicitação: ' + error.message);
+        console.error('❌ Erro ao enviar:', error);
+        alert('❌ Erro ao enviar solicitação: ' + error.message + '\n\nVerifique o console para mais detalhes.');
     }
 });
 
