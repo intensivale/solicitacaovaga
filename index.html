@@ -574,6 +574,34 @@ body {
                 </div>
             </div>
             
+            <!-- RESERVA HEMODINÂMICA -->
+            <div class="section">
+                <div class="section-title">
+                    🩺 Reserva Hemodinâmica
+                </div>
+                
+                <div class="form-group">
+                    <label class="required">Reserva Hemodinâmica?</label>
+                    <div class="radio-group">
+                        <div class="radio-option">
+                            <input type="radio" id="reservaHemodinamicaSim" name="reservaHemodinamica" value="sim">
+                            <label for="reservaHemodinamicaSim">Sim</label>
+                        </div>
+                        <div class="radio-option">
+                            <input type="radio" id="reservaHemodinamicaNao" name="reservaHemodinamica" value="nao" checked>
+                            <label for="reservaHemodinamicaNao">Não</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="camposReservaHemodinamica" class="conditional-field">
+                    <div class="form-group">
+                        <label class="required">Data da Reserva Hemodinâmica</label>
+                        <input type="date" id="dataReservaHemodinamica">
+                    </div>
+                </div>
+            </div>
+            
             <!-- INSTABILIDADE HEMODINÂMICA -->
             <div class="section">
                 <div class="section-title">
@@ -1025,6 +1053,13 @@ document.querySelectorAll('input[name="mupirocina"]').forEach(radio => {
     });
 });
 
+// Reserva Hemodinâmica
+document.querySelectorAll('input[name="reservaHemodinamica"]').forEach(radio => {
+    radio.addEventListener('change', function() {
+        document.getElementById('camposReservaHemodinamica').classList.toggle('active', this.value === 'sim');
+    });
+});
+
 // Hemodinâmica
 document.querySelectorAll('input[name="hemodinamica"]').forEach(radio => {
     radio.addEventListener('change', function() {
@@ -1163,6 +1198,10 @@ document.getElementById('formSolicitacao').addEventListener('submit', async func
         cardiovascular: document.querySelector('input[name="cardiovascular"]:checked').value === 'sim',
         mupirocina: getRadioValue('mupirocina'),
         dataInicioMupirocina: document.getElementById('dataInicioMupirocina').value || null,
+        
+        // Reserva Hemodinâmica
+        reservaHemodinamica: document.querySelector('input[name="reservaHemodinamica"]:checked').value === 'sim',
+        dataReservaHemodinamica: document.getElementById('dataReservaHemodinamica').value || null,
         
         // Hemodinâmica
         instabilidadeHemodinamica: document.querySelector('input[name="hemodinamica"]:checked').value === 'sim',
